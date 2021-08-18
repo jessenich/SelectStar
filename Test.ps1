@@ -1,17 +1,32 @@
-[cmdletBinding()]
-Param([switch]$Load, [switch]$NoTest, [string]$TestName)
-If($Load) {
+[CmdletBinding()]
+param(
+    [switch]$Load,
+    [switch]$NoTest,
+    [string]$TestName
+)
+
+if ($Load) {
     Write-Host "Original PID: $pid"
-    If($NoTest) { $cmd = "{0} -NoTest" -f $PSCmdlet.MyInvocation.MyCommand.Source }
-    Else {
-        If($TestName) { $cmd = "{0} -TestName '{1}'" -f $PSCmdlet.MyInvocation.MyCommand.Source, $TestName }
-        Else { $cmd = "{0}" -f $PSCmdlet.MyInvocation.MyCommand.Source }
+    if ($NoTest) {
+        $cmd = "{0} -NoTest" -f $PSCmdlet.MyInvocation.MyCommand.Source
     }
+    elseif ($TestName) {
+        $cmd = "{0} -TestName '{1}'" -f $PSCmdlet.MyInvocation.MyCommand.Source, $TestName
+    }
+    else {
+        $cmd = "{0}" -f $PSCmdlet.MyInvocation.MyCommand.Source
+    }
+
     PowerShell -noprofile -noexit -command $cmd
-    if($global:IsNestedSessionSelectStar) { Write-Warning "Exited one session, but currently in another nested session!" }
-    else { Write-Warning "You have exited the last nested session."}
+
+    if ($global:IsNestedSessionSelectStar) {
+        Write-Warning "Exited one session, but currently in another nested session!"
+    }
+    else {
+        Write-Warning "You have exited the last nested session."
+    }
 }
-Else {
+else {
     Write-Host "Session PID: $pid"
     #Clear-Host
     Write-Host "In New PowerShell Session, [exit] to resume."
@@ -23,9 +38,13 @@ Else {
     Import-Module Pester -Force
     Write-Host ("Loaded '{0}' of SelectStar!" -f (Get-Module SelectStar).Version.ToString())
 
-    If(-not $NoTest) {
-        If($TestName) { Invoke-Pester -Script $PSScriptRoot -FullNameFilter $TestName -Show All}
-        Else { Invoke-Pester -Script $PSScriptRoot -Show All }
+    if (-not $NoTest) {
+        if ($TestName) {
+            Invoke-Pester -Script $PSScriptRoot -FullNameFilter $TestName -Show All
+        }
+        else {
+            Invoke-Pester -Script $PSScriptRoot -Show All
+        }
     }
     <#Get-Module SelectStar | Format-List
 

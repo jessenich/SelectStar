@@ -1,0 +1,52 @@
+{
+    "name": "select-star",
+    "extensions": [
+        // PowerShell Support
+        "ms-vscode.powershell",
+        "tylerleonhardt.vscode-inline-values-powershell",
+        "azps-tools.azps-tools",
+
+        // Markdown Support
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "darkriszty.markdown-table-prettify",
+        "bierner.markdown-checkbox",
+        "telesoho.vscode-markdown-paste-image",
+        "zaaack.markdown-editor",
+        "goessner.mdmath",
+
+        // Markup Languages Support
+        "redhat.vscode-yaml",
+        "fabianlauer.vs-code-xml-format",
+
+        // Syntax Enhancers
+        "coenraads.bracket-pair-colorizer-2",
+
+        // Git & GitHub Utilities
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "mhutchie.git-graph",
+        "cschleiden.vscode-github-actions",
+
+        // VSCode UI Enhancements
+        "vscode-icons-team.vscode-icons",
+        "aaron-bond.better-comments",
+        "github.github-vscode-theme",
+
+        // Test Suites & Utilities
+        "hbenl.vscode-test-explorer",
+
+        // Misc Utilities
+        "louiswt.regexp-preview",
+
+        // IntelliSense/AutoComplete Extensions
+        "github.copilot",
+
+        // Keybindings
+        "ms-vscode.vs-keybindings"
+
+    ],
+    "settings": {
+
+    }
+}

@@ -9,26 +9,32 @@ $Script:Connections = @{}
 . (Join-Path $PSScriptRoot "DataReaderMap.ps1")
 
 #Load up base Classes
-. (Join-Path $PSScriptRoot "Classes.ps1"
+. (Join-Path $PSScriptRoot "Classes.ps1")
 
 #Load Up Internal Functions
-. (Join-Path $PSScriptRoot "Functions" "TestConnectionName.ps1"
+. (Join-Path $PSScriptRoot "Functions" "TestConnectionName.ps1")
 
 #Load up providers
-ForEach($f in Get-ChildItem "$PSScriptRoot\Providers\" -Directory) {
-    $Configfile = (Join-Path $f.FullName ("config.ps1" -f $f.name))
+Get-ChildItem "$PSScriptRoot\Providers\" -Directory | ForEach-Object {
+    $directory = $PSItem;
+    $configFile = (Join-Path $directory.FullName "config.ps1")
 
-    If(Test-Path $ConfigFile) {
-        Try { . $ConfigFile }
-        Catch { Write-Warning ("'{0}' Provider Failed to Load: {1}" -f $f.Name, $_.ToString()) }
+    if (Test-Path $configFile) {
+        try {
+            . $configFile
+        }
+        catch {
+            Write-Warning ("'{0}' Provider Failed to Load: {1}" -f $directory.Name, $_.ToString())
+        }
     }
 }
 
-If (@(Get-Command -Module SelectStar -Verb Open).Count -eq 0) {
+$Private:Commands = Get-Command -Module SelectStar -Verb Open;
+if ($null -eq $Private:Commands -or $Private:Commands.Count -eq 0) {
     Write-Error "No Providers were loaded!"
 }
-Else {
+else {
     Get-ChildItem (Join-Path $PSScriptRoot "Cmdlets") -File | ForEach-Object { . $_.FullName }
 }
 
-Remove-Variable f, Configfile
+Remove-Variable directory, configFile

@@ -12,8 +12,14 @@
 #>
 Filter Close-SqlConnection {
     [CmdletBinding()]
-    Param([parameter(ValueFromPipeline, Position=0)][ValidateNotNullOrEmpty()][Alias("cn")][string]$ConnectionName = "default")
-    
+    param(
+        [parameter(ValueFromPipeline, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [Alias("cn")]
+        [string]
+        $ConnectionName = "default"
+    )
+
     If(-not (TestConnectionName $ConnectionName)) { return }
     Else {
         If($Script:Connections.$ConnectionName.HasTransaction()) {
@@ -23,8 +29,8 @@ Filter Close-SqlConnection {
         Finally {
             $Script:Connections.$ConnectionName.Connection.Dispose()
             $Script:Connections.Remove($ConnectionName)
-        }        
-    }    
+        }
+    }
 }
 
 Set-Alias -Name csc -Value Close-SqlConnection
